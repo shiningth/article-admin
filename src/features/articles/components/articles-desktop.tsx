@@ -6,7 +6,7 @@ import { useSearch } from '@/context/search-provider.tsx'
 import { useDebounce } from '@/hooks/use-debounce.tsx'
 import { ArticleCard } from '@/features/articles/components/article-card.tsx'
 import { FilterBar } from '@/features/articles/components/filter-bar.tsx'
-import { ArticlePagination } from '@/features/articles/components/pagination.tsx'
+import { CommonPagination } from '@/components/pagination.tsx'
 
 const PAGE_SIZE = 30
 
@@ -63,7 +63,7 @@ export function ArticlesDesktop() {
       </div>
 
       <div className='flex shrink-0 pt-2'>
-        <ArticlePagination
+        <CommonPagination
           page={page}
           total={data?.total || 0}
           pageSize={PAGE_SIZE}

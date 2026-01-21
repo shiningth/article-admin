@@ -3,7 +3,7 @@ import {
   ListTodo,
   HelpCircle,
   Settings,
-  Newspaper
+  Newspaper,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -23,8 +23,17 @@ export const sidebarData: SidebarData = {
         },
         {
           title: '任务',
-          url: '/tasks',
           icon: ListTodo,
+          items: [
+            {
+              url: '/tasks',
+              title: '任务管理',
+            },
+            {
+              url: '/tasks/log',
+              title: '执行记录',
+            },
+          ],
         },
         {
           title: '文章',
@@ -40,7 +49,6 @@ export const sidebarData: SidebarData = {
           title: '设置',
           url: '/settings',
           icon: Settings,
-
         },
         {
           title: '帮助中心',

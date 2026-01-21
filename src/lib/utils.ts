@@ -46,3 +46,18 @@ export function formatDate(date?: Date) {
   if (!date) return ''
   return date.toISOString().slice(0, 10)
 }
+
+export function formatDateTime(isoString: string) {
+  const date = new Date(isoString)
+
+  const pad = (n: number) => String(n).padStart(2, '0')
+
+  const Y = date.getFullYear()
+  const M = pad(date.getMonth() + 1)
+  const D = pad(date.getDate())
+  const h = pad(date.getHours())
+  const m = pad(date.getMinutes())
+  const s = pad(date.getSeconds())
+
+  return `${Y}-${M}-${D} ${h}:${m}:${s}`
+}

@@ -25,6 +25,7 @@ import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedArticlesIndexRouteImport } from './routes/_authenticated/articles/index'
+import { Route as AuthenticatedTasksLogRouteImport } from './routes/_authenticated/tasks/log'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsFolderRouteImport } from './routes/_authenticated/settings/folder'
 import { Route as AuthenticatedSettingsDownloaderRouteImport } from './routes/_authenticated/settings/downloader'
@@ -114,6 +115,11 @@ const AuthenticatedArticlesIndexRoute =
     path: '/articles/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedTasksLogRoute = AuthenticatedTasksLogRouteImport.update({
+  id: '/tasks/log',
+  path: '/tasks/log',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsRouteImport.update({
     id: '/notifications',
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/settings/downloader': typeof AuthenticatedSettingsDownloaderRoute
   '/settings/folder': typeof AuthenticatedSettingsFolderRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/tasks/log': typeof AuthenticatedTasksLogRoute
   '/articles': typeof AuthenticatedArticlesIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/settings/downloader': typeof AuthenticatedSettingsDownloaderRoute
   '/settings/folder': typeof AuthenticatedSettingsFolderRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/tasks/log': typeof AuthenticatedTasksLogRoute
   '/articles': typeof AuthenticatedArticlesIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/downloader': typeof AuthenticatedSettingsDownloaderRoute
   '/_authenticated/settings/folder': typeof AuthenticatedSettingsFolderRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/_authenticated/tasks/log': typeof AuthenticatedTasksLogRoute
   '/_authenticated/articles/': typeof AuthenticatedArticlesIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -231,6 +240,7 @@ export interface FileRouteTypes {
     | '/settings/downloader'
     | '/settings/folder'
     | '/settings/notifications'
+    | '/tasks/log'
     | '/articles'
     | '/help-center'
     | '/settings/'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/settings/downloader'
     | '/settings/folder'
     | '/settings/notifications'
+    | '/tasks/log'
     | '/articles'
     | '/help-center'
     | '/settings'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/downloader'
     | '/_authenticated/settings/folder'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/tasks/log'
     | '/_authenticated/articles/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
@@ -408,6 +420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedArticlesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tasks/log': {
+      id: '/_authenticated/tasks/log'
+      path: '/tasks/log'
+      fullPath: '/tasks/log'
+      preLoaderRoute: typeof AuthenticatedTasksLogRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/notifications': {
       id: '/_authenticated/settings/notifications'
       path: '/notifications'
@@ -473,6 +492,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedTasksLogRoute: typeof AuthenticatedTasksLogRoute
   AuthenticatedArticlesIndexRoute: typeof AuthenticatedArticlesIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
@@ -482,6 +502,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedTasksLogRoute: AuthenticatedTasksLogRoute,
   AuthenticatedArticlesIndexRoute: AuthenticatedArticlesIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,

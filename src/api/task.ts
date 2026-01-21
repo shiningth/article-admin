@@ -1,5 +1,6 @@
 import { request } from '@/api/request.ts'
 import type { Task } from '@/features/tasks/components/task-manager.tsx'
+import { TaskLogFilter, TaskLogResult } from '@/features/tasks/log/task-log.tsx'
 
 export function getTasks() {
   return request<Task[]>({ url: '/tasks' })
@@ -19,4 +20,16 @@ export function deleteTask(task_id: number) {
 
 export function runTask(task_id: number) {
   return request<Task[]>({ url: `/tasks/run/${task_id}`, method: 'get' })
+}
+
+export function pageTaskLog(filter: TaskLogFilter) {
+  return request<TaskLogResult>({
+    url: `/tasks/log/search`,
+    method: 'post',
+    data: {
+      page: filter.page,
+      page_size: filter.pageSize,
+      task_func: filter.task_func,
+    },
+  })
 }

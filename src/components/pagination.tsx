@@ -5,7 +5,7 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
-} from '@/components/ui/pagination'
+} from '@/components/ui/pagination.tsx'
 
 
 
@@ -16,7 +16,7 @@ interface Props {
   onChange: (page: number) => void
 }
 
-export function ArticlePagination({ page, total, pageSize, onChange }: Props) {
+export function CommonPagination({ page, total, pageSize, onChange }: Props) {
   const totalPages = Math.ceil(total / pageSize)
   const pages = getPageNumbers(page, totalPages)
   if (totalPages <= 1) return null
