@@ -21,8 +21,10 @@ const accountScheme = z.object({
   password: z.string().min(8, '至少8位密码'),
 })
 
+type accountValues = z.infer<typeof accountScheme>
+
 export function AccountForm() {
-  const account = useForm<z.infer<typeof accountScheme>>({
+  const account = useForm<accountValues>({
     resolver: zodResolver(accountScheme),
     defaultValues: {
       username: '',
@@ -30,7 +32,7 @@ export function AccountForm() {
     },
   })
 
-  const handleSubmit = async (data: z.infer<typeof accountScheme>) => {
+  const handleSubmit = async (data: accountValues) => {
     const res = await update_user(data)
     toast.success(res.message)
   }

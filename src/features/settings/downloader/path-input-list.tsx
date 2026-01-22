@@ -1,18 +1,15 @@
 import { Plus, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
+import type { SavePath } from '@/api/config.ts'
 
-export type PathItem = {
-  path: string
-  label: string
-}
 
 export function PathListInput({
   value,
   onChange,
 }: {
-  value: PathItem[]
-  onChange: (v: PathItem[]) => void
+  value: SavePath[]
+  onChange: (v: SavePath[]) => void
 }) {
   const addPath = () => onChange([...value, { label: '', path: '' }])
 

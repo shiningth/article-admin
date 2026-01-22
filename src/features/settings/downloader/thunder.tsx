@@ -29,8 +29,10 @@ const thunderSchema = z.object({
   ),
 })
 
+type downloadValues = z.infer<typeof thunderSchema>
+
 export function Thunder({ downloaderId }: { downloaderId: string }) {
-  const downloader = useForm<z.infer<typeof thunderSchema>>({
+  const downloader = useForm<downloadValues>({
     resolver: zodResolver(thunderSchema),
     defaultValues: {
       url: '',
@@ -43,16 +45,14 @@ export function Thunder({ downloaderId }: { downloaderId: string }) {
   const { data } = useQuery({
     queryKey: ['downloader', downloaderId],
     queryFn: async () => {
-      const res = await getConfig<z.infer<typeof thunderSchema>>(
-        'Downloader.' + downloaderId
-      )
+      const res = await getConfig<downloadValues>('Downloader.' + downloaderId)
       return res.data
     },
     staleTime: 5 * 60 * 1000,
   })
 
   const updateMutation = useMutation({
-    mutationFn: async (values: z.infer<typeof thunderSchema>) => {
+    mutationFn: async (values: downloadValues) => {
       return await postConfig('Downloader.' + downloaderId, values as never)
     },
     onSuccess: (res) => {
@@ -71,9 +71,9 @@ export function Thunder({ downloaderId }: { downloaderId: string }) {
   return (
     <Form {...downloader}>
       <form
-        onSubmit={downloader.handleSubmit((values) => {
+        onSubmit={downloader.handleSubmit((values) =>
           updateMutation.mutate(values)
-        })}
+        )}
         className='max-w-md space-y-4'
       >
         <FormField

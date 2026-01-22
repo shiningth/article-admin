@@ -1,5 +1,9 @@
-import type { User } from '@/types/user.ts'
 import { request } from './request'
+
+export interface User {
+  username: string
+  access_token: string
+}
 
 export function login(data: { username: string; password: string }) {
   return request<User>({
@@ -19,8 +23,6 @@ export function create_user(params: { username: string; password: string }) {
     params,
   })
 }
-
-
 
 export function update_user(params: { username: string; password: string }) {
   return request({

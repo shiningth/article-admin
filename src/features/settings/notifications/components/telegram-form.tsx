@@ -24,6 +24,8 @@ const telegramSchema = z.object({
   template: z.string(),
 })
 
+type telegramValues = z.infer<typeof telegramSchema>
+
 export function TelegramNotificationForm() {
   const tgTemplate = `🚀 {{title}}
 
@@ -35,7 +37,7 @@ export function TelegramNotificationForm() {
 🔗 Magnet：
 {{magnet}}`
 
-  const form = useForm({
+  const form = useForm<telegramValues>({
     resolver: zodResolver(telegramSchema),
     defaultValues: {
       enable: false,
@@ -47,7 +49,7 @@ export function TelegramNotificationForm() {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof telegramSchema>) => {
+  const onSubmit = (values: telegramValues) => {
     console.log('telegram config', values)
   }
 

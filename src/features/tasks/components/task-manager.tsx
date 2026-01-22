@@ -3,15 +3,15 @@ import * as z from 'zod'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { TaskFunction } from '@/types/config.ts'
 import { Plus, Pencil, Trash2, Clock, Zap, Play } from 'lucide-react'
 import { toast } from 'sonner'
-import { getConfig } from '@/api/config.ts'
 import {
   addTask,
   deleteTask,
+  fetchFuncList,
   getTasks,
   runTask,
+  type Task,
   updateTask,
 } from '@/api/task.ts'
 import { cn } from '@/lib/utils.ts'
@@ -46,15 +46,6 @@ import {
 import { Textarea } from '@/components/ui/textarea.tsx'
 import { ResponsiveModal } from '@/components/response-modal.tsx'
 
-export interface Task {
-  id: number
-  task_name: string
-  task_func: string
-  task_args: string
-  task_cron: string
-  enable: boolean
-}
-
 const taskSchema = z.object({
   task_name: z.string().min(2, '任务名称至少2个字符'),
   task_func: z.string().min(1, '请选择执行函数'),
@@ -62,6 +53,16 @@ const taskSchema = z.object({
   task_cron: z.string().min(5, '请输入有效的 Cron 表达式'),
   enable: z.boolean(),
 })
+
+type taskValues = z.infer<typeof taskSchema>
+
+const defaultValues = {
+  task_name: '',
+  task_func: '',
+  task_args: '',
+  task_cron: '0 * * * *',
+  enable: true,
+}
 
 export default function TaskManager() {
   const [editingTask, setEditingTask] = useState<Task | null>(null)
@@ -78,7 +79,7 @@ export default function TaskManager() {
   })
 
   const saveTaskMutation = useMutation({
-    mutationFn: async (values: z.infer<typeof taskSchema>) => {
+    mutationFn: async (values: taskValues) => {
       if (editingTask) {
         return await updateTask({
           ...values,
@@ -111,21 +112,15 @@ export default function TaskManager() {
   const { data: taskFunctions } = useQuery({
     queryKey: ['taskFunc'],
     queryFn: async () => {
-      const res = await getConfig<TaskFunction[]>('TaskFunction')
+      const res = await fetchFuncList()
       return res.data
     },
     staleTime: 5 * 60 * 1000,
   })
 
-  const form = useForm<z.infer<typeof taskSchema>>({
+  const form = useForm<taskValues>({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
-      task_name: '',
-      task_func: '',
-      task_args: '',
-      task_cron: '0 * * * *',
-      enable: true,
-    },
+    defaultValues: defaultValues,
   })
 
   const selectedFunc = useWatch({
@@ -133,18 +128,16 @@ export default function TaskManager() {
     name: 'task_func',
   })
 
+  const func_arg = taskFunctions?.find(
+    (f) => f.func_name === selectedFunc
+  )?.func_args
+
   // 处理编辑状态回填
   useEffect(() => {
     if (editingTask) {
       form.reset(editingTask)
     } else if (isFormOpen) {
-      form.reset({
-        task_name: '',
-        task_func: '',
-        task_args: '',
-        task_cron: '0 * * * *',
-        enable: true,
-      })
+      form.reset(defaultValues)
     }
   }, [editingTask, isFormOpen, form])
 
@@ -238,13 +231,7 @@ export default function TaskManager() {
                       ></Textarea>
                     </FormControl>
                     <FormDescription>
-                      <span>
-                        {
-                          taskFunctions?.find(
-                            (f) => f.func_name === selectedFunc
-                          )?.func_args_description
-                        }
-                      </span>
+                      <span>参数列表: {func_arg}</span>
                     </FormDescription>
                   </FormItem>
                 )}
@@ -289,7 +276,11 @@ export default function TaskManager() {
                   </FormItem>
                 )}
               />
-              <Button type='submit' disabled={saveTaskMutation.isPending} className="w-full">
+              <Button
+                type='submit'
+                disabled={saveTaskMutation.isPending}
+                className='w-full'
+              >
                 {saveTaskMutation.isPending ? '保存中...' : '保存配置'}
               </Button>
             </form>
@@ -324,45 +315,54 @@ export default function TaskManager() {
                           : 'bg-slate-400 shadow-none'
                       )}
                     />
-                    <span className='font-bold text-base md:font-semibold'>{task.task_name}</span>
+                    <span className='text-base font-bold md:font-semibold'>
+                      {task.task_name}
+                    </span>
                   </div>
                 </TableCell>
 
-                <TableCell className='flex items-start justify-between py-2 px-0 md:table-cell md:py-4'>
-                  <span className='text-sm font-medium text-muted-foreground md:hidden'>执行逻辑</span>
+                <TableCell className='flex items-start justify-between px-0 py-2 md:table-cell md:py-4'>
+                  <span className='text-sm font-medium text-muted-foreground md:hidden'>
+                    执行逻辑
+                  </span>
                   <div className='flex flex-col items-end gap-2 md:flex-row md:items-center'>
                     <Badge variant='outline' className='font-mono'>
                       {task.task_func}
                     </Badge>
                     <div className='flex items-center gap-2'>
-                      <span className='hidden text-xs text-muted-foreground md:inline'>→</span>
-                      <span className='text-xs text-slate-600 max-w-[200px] truncate md:max-w-none'>
-                {task.task_args}
-              </span>
+                      <span className='hidden text-xs text-muted-foreground md:inline'>
+                        →
+                      </span>
+                      <span className='max-w-[200px] truncate text-xs text-slate-600 md:max-w-none'>
+                        {task.task_args}
+                      </span>
                     </div>
                   </div>
                 </TableCell>
 
-                <TableCell className='flex items-center justify-between py-2 px-0 md:table-cell md:py-4'>
-                  <span className='text-sm font-medium text-muted-foreground md:hidden'>Cron 周期</span>
+                <TableCell className='flex items-center justify-between px-0 py-2 md:table-cell md:py-4'>
+                  <span className='text-sm font-medium text-muted-foreground md:hidden'>
+                    Cron 周期
+                  </span>
                   <span className='font-mono text-sm text-muted-foreground'>
-            {task.task_cron}
-          </span>
+                    {task.task_cron}
+                  </span>
                 </TableCell>
 
-                <TableCell className='flex justify-end pt-3 px-0 md:table-cell md:pt-4 md:sticky md:right-0'>
-                  <div className='flex gap-1 border-t pt-3 w-full justify-end md:border-none md:pt-0 md:w-auto'>
+                <TableCell className='flex justify-end px-0 pt-3 md:sticky md:right-0 md:table-cell md:pt-4'>
+                  <div className='flex w-full justify-end gap-1 border-t pt-3 md:w-auto md:border-none md:pt-0'>
                     <Button
                       variant='outline'
                       size='icon'
-                      className="h-9 w-9 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 hover:border-emerald-200 md:h-8 md:w-8 md:border-none md:bg-transparent"                      onClick={() => handleRunTask(task.id)}
+                      className='h-9 w-9 text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 md:h-8 md:w-8 md:border-none md:bg-transparent'
+                      onClick={() => handleRunTask(task.id)}
                     >
                       <Play className='h-4 w-4' />
                     </Button>
                     <Button
                       variant='outline'
                       size='icon'
-                      className="h-9 w-9 md:h-8 md:w-8 md:variant-ghost"
+                      className='md:variant-ghost h-9 w-9 md:h-8 md:w-8'
                       onClick={() => {
                         setEditingTask(task)
                         setIsFormOpen(true)
@@ -373,7 +373,7 @@ export default function TaskManager() {
                     <Button
                       variant='outline'
                       size='icon'
-                      className='h-9 w-9 text-destructive md:h-8 md:w-8 md:variant-ghost'
+                      className='md:variant-ghost h-9 w-9 text-destructive md:h-8 md:w-8'
                       onClick={() => handleDelete(task.id)}
                     >
                       <Trash2 className='h-4 w-4' />

@@ -27,27 +27,6 @@ import {
 import { CommonPagination } from '@/components/pagination.tsx'
 
 const PAGE_SIZE = 20
-export interface TaskLogFilter {
-  page: number
-  pageSize: number
-  task_func: string
-}
-export interface TaskLog {
-  id: number
-  task_func: string
-  start_time: string
-  end_time: string
-  execute_seconds: number
-  execute_result: string
-  execute_flag: string
-  success: boolean
-  error: string
-  create_time: string
-}
-export interface TaskLogResult {
-  total: number
-  items: TaskLog[]
-}
 
 export function TaskLogTable() {
   const [filter, setFilter] = useState({
@@ -55,7 +34,7 @@ export function TaskLogTable() {
     page: 1,
     pageSize: 20,
   })
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['task-log', filter],
     queryFn: async () => {
       const res = await pageTaskLog(filter)
@@ -73,29 +52,37 @@ export function TaskLogTable() {
     staleTime: 5 * 60 * 1000,
   })
   return (
-    <>
-      <Select
-        value={filter.task_func}
-        onValueChange={(v) => setFilter((prev) => ({ ...prev, task_func: v }))}
-      >
-        <SelectTrigger className='w-full max-w-48'>
-          <SelectValue placeholder='选择一个函数' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem value='all'>全部函数</SelectItem>
-            {tasks?.map((item, index) => (
-              <SelectItem value={item.task_func} key={index}>
-                {item.task_name}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-      <div className='rounded-lg border'>
+    <div className='flex h-full flex-col overflow-hidden'>
+      {/* ① 筛选栏 */}
+      <div className='sticky top-0 z-30 mb-2'>
+        <Select
+          value={filter.task_func}
+          onValueChange={(v) =>
+            setFilter((prev) => ({ ...prev, task_func: v }))
+          }
+        >
+          <SelectTrigger className='w-full max-w-48'>
+            <SelectValue placeholder='选择一个函数' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value='all'>全部函数</SelectItem>
+              {tasks?.map((item, index) => (
+                <SelectItem value={item.task_func} key={index}>
+                  {item.task_name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* ② 表格区域（滚动容器） */}
+      <div className='flex-1 overflow-auto rounded-lg border'>
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>任务名称</TableHead>
               <TableHead>任务函数</TableHead>
               <TableHead>开始时间</TableHead>
               <TableHead>结束时间</TableHead>
@@ -106,45 +93,91 @@ export function TaskLogTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.items.map((log) => (
-              <TableRow key={log.id}>
-                <TableCell>{log.task_func}</TableCell>
-                <TableCell>{formatDateTime(log.start_time)}</TableCell>
-                <TableCell>{formatDateTime(log.end_time)}</TableCell>
-                <TableCell>{log.execute_seconds}秒</TableCell>
-                <TableCell className='max-w-[300px] overflow-hidden'>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span className='cursor-pointer truncate'>
-                        {log.execute_result}
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className='max-h-[400px] max-w-[600px] overflow-auto' side="left">
-                      <pre className='text-xs whitespace-pre-wrap'>
-                        {JSON.stringify(
-                          JSON.parse(log.execute_result),
-                          null,
-                          2
-                        )}
-                      </pre>
-                    </TooltipContent>
-                  </Tooltip>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={8} className='text-center'>
+                  加载中...
                 </TableCell>
-                <TableCell>
-                  <Badge>{log.success ? '成功' : '失败'}</Badge>
-                </TableCell>
-                <TableCell>{log.error}</TableCell>
               </TableRow>
-            ))}
+            ) : data?.items.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className='text-center'>
+                  暂无数据
+                </TableCell>
+              </TableRow>
+            ) : (
+              data?.items.map((log) => (
+                <TableRow key={log.id}>
+                  <TableCell>{log.task_name}</TableCell>
+                  <TableCell>{log.task_func}</TableCell>
+                  <TableCell>{formatDateTime(log.start_time)}</TableCell>
+                  <TableCell>{formatDateTime(log.end_time)}</TableCell>
+                  <TableCell>{log.execute_seconds}秒</TableCell>
+                  <TableCell className='max-w-[300px] overflow-hidden'>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className='cursor-pointer truncate'>
+                          {log.execute_result}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        className='max-h-[400px] max-w-[600px] overflow-auto'
+                        side='left'
+                      >
+                        <pre className='text-xs whitespace-pre-wrap'>
+                          {JSON.stringify(
+                            JSON.parse(log.execute_result),
+                            null,
+                            2
+                          )}
+                        </pre>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      className={
+                        log.success
+                          ? 'bg-green-500  hover:bg-green-500'
+                          : 'bg-red-500  hover:bg-red-500'
+                      }
+                    >
+                      {log.success ? '成功' : '失败'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className='cursor-pointer truncate'>
+                          {log.error}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent
+                        className='max-h-[400px] max-w-[600px] overflow-auto'
+                        side='left'
+                      >
+                        <pre className='text-xs whitespace-pre-wrap'>
+                          {log.error}
+                        </pre>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
-      <CommonPagination
-        page={filter.page}
-        total={data?.total || 0}
-        pageSize={PAGE_SIZE}
-        onChange={(v) => setFilter((prev) => ({ ...prev, page: v }))}
-      />
-    </>
+
+      {/* ④ 分页 */}
+      <div className='sticky bottom-0 z-30 border-t bg-background'>
+        <CommonPagination
+          page={filter.page}
+          total={data?.total || 0}
+          pageSize={PAGE_SIZE}
+          onChange={(v) => setFilter((prev) => ({ ...prev, page: v }))}
+        />
+      </div>
+    </div>
   )
 }

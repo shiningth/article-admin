@@ -8,6 +8,10 @@ export const folderSchema = z.object({
   regex: z.string().optional(),
 })
 
+export type folderValues = z.infer<typeof folderSchema>
+
 export const folderFormSchema = z.object({
   folders: z.array(folderSchema),
 })
+
+export type folderFormValues = z.infer<typeof folderFormSchema>

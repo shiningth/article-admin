@@ -36,6 +36,11 @@ export const sidebarData: SidebarData = {
           ],
         },
         {
+          title: '下载记录',
+          url: '/download-log',
+          icon: Newspaper,
+        },
+        {
           title: '文章',
           url: '/articles',
           icon: Newspaper,

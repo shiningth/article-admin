@@ -1,7 +1,13 @@
 import type { AxiosRequestConfig } from 'axios'
-import type { ApiResponse } from '@/types/response'
-import axios from './axios'
 import { toast } from 'sonner'
+import axios from './axios'
+
+export interface ApiResponse<T> {
+  code: number
+  message: string
+  data: T
+}
+
 export function request<T>(
   config: AxiosRequestConfig
 ): Promise<ApiResponse<T>> {

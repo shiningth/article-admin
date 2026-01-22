@@ -28,6 +28,8 @@ const wechatSchema = z.object({
   template: z.string(),
 })
 
+type wechatValues = z.infer<typeof wechatSchema>
+
 export function WechatNotificationForm() {
   const wxTemplate = `📁 板块：{{section}} / {{type}}
 📦 体积：{{size}}
@@ -37,7 +39,7 @@ export function WechatNotificationForm() {
 🔗 Magnet：
 {{magnet}}`
 
-  const form = useForm({
+  const form = useForm<wechatValues>({
     resolver: zodResolver(wechatSchema),
     defaultValues: {
       enable: false,
@@ -53,7 +55,7 @@ export function WechatNotificationForm() {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof wechatSchema>) => {
+  const onSubmit = (values: wechatValues) => {
     console.log('wechat config', values)
   }
 

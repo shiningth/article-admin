@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useIsMobile } from '@/hooks/use-mobile.tsx';
+import * as React from 'react'
+import { useIsMobile } from '@/hooks/use-mobile.tsx'
 import {
   Dialog,
   DialogContent,
@@ -17,14 +17,9 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 
-
-
-
-
-
-
 interface ResponsiveModalProps {
-  title: string
+  title?: string
+  description?: string
   children: React.ReactNode
   trigger?: React.ReactNode
   open?: boolean
@@ -32,12 +27,13 @@ interface ResponsiveModalProps {
 }
 
 export function ResponsiveModal({
-                                  title,
-                                  children,
-                                  trigger,
-                                  open,
-                                  onOpenChange,
-                                }: ResponsiveModalProps) {
+  title,
+  description,
+  children,
+  trigger,
+  open,
+  onOpenChange,
+}: ResponsiveModalProps) {
   // 这里的 (min-width: 768px) 是常见的桌面端断点
   const isMobile = useIsMobile()
 
@@ -45,10 +41,10 @@ export function ResponsiveModal({
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-        <DialogContent className='w-auto max-w-none sm:max-w-none'>
+        <DialogContent className='w-auto max-w-none sm:max-w-none min-w-md'>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription/>
+            <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}
         </DialogContent>
@@ -59,14 +55,12 @@ export function ResponsiveModal({
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
-      <DrawerContent>
-        <DrawerHeader className="text-left">
+      <DrawerContent className='px-4'>
+        <DrawerHeader className='text-left'>
           <DrawerTitle>{title}</DrawerTitle>
-          <DrawerDescription/>
+          <DrawerDescription />
         </DrawerHeader>
-        <div className="px-4 pb-4">
-          {children}
-        </div>
+        <div className='flex-1 overflow-y-auto'>{children}</div>
       </DrawerContent>
     </Drawer>
   )

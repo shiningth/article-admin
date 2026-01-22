@@ -1,10 +1,43 @@
-import type { Article, ArticleFilter, Category } from '@/types/article.ts'
 import { request } from './request'
+
+
+export interface Article {
+  tid: number
+  title: string
+  section: string
+  publish_date: string
+  magnet: string
+  preview_images: string
+  sub_type: string
+  size: number
+  in_stock: boolean
+  detail_url: string
+}
+
+export interface ArticleFilter {
+  keyword: string
+  category: string
+}
+
 
 export interface ArticleListResult {
   items: Article[]
-  total: number
+  total: number,
+  hasMore: boolean,
+  page: number
+  pageSize: number
 }
+
+export interface Category {
+  category: string
+  count: number
+  items?: {
+    category: string
+    count: number
+  }[]
+}
+
+
 
 export function getArticles(params: {
   page: number

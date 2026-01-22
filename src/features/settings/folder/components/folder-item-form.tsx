@@ -1,7 +1,7 @@
-import type z from 'zod'
 import type { UseFormReturn } from 'react-hook-form'
-import type { Category } from '@/types/article.ts'
 import { ChevronDown, Trash2, Regex } from 'lucide-react'
+import type { Category } from '@/api/article.ts'
+import type { Downloader } from '@/api/config.ts'
 import { Button } from '@/components/ui/button.tsx'
 import {
   Collapsible,
@@ -22,16 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.tsx'
-import type { DownloaderConfig } from '@/features/settings/folder/folder-form.tsx'
-import type { folderFormSchema } from '@/features/settings/folder/schema.ts'
+import type { folderFormValues } from '@/features/settings/folder/schema.ts'
 
-interface Props {
-  index: number
-  form: UseFormReturn<z.infer<typeof folderFormSchema>>
-  categories: Category[]
-  downloaders: DownloaderConfig[]
-  remove: (index: number) => void
-}
 
 export function FolderItem({
   index,
@@ -39,7 +31,13 @@ export function FolderItem({
   categories,
   downloaders,
   remove,
-}: Props) {
+}: {
+  index: number
+  form: UseFormReturn<folderFormValues>
+  categories?: Category[]
+  downloaders?: Downloader[]
+  remove: (index: number) => void
+}) {
   const category = form.watch(`folders.${index}.category`)
   const subCategory = form.watch(`folders.${index}.subCategory`)
   const regex = form.watch(`folders.${index}.regex`)
@@ -50,49 +48,47 @@ export function FolderItem({
     categories?.find((c) => c.category === category)?.items ?? []
 
   const savePaths =
-    downloaders.find((d) => d.id === downloader)?.save_paths ?? []
+    downloaders?.find((d) => d.id === downloader)?.save_paths ?? []
 
   return (
     <Collapsible className='group overflow-hidden rounded-xl border bg-card'>
       <CollapsibleTrigger asChild>
-        <div className='flex cursor-pointer items-center justify-between gap-3 px-3 py-4 hover:bg-muted/50 transition-colors group'>
-          {/* 左侧内容区：min-w-0 是防止溢出的关键 */}
-          <div className='flex items-center gap-3 min-w-0 flex-1'>
-            {/* 序号：固定宽度，不参与缩放 */}
+        <div className='group flex cursor-pointer items-center justify-between gap-3 px-3 py-4 transition-colors hover:bg-muted/50'>
+          <div className='flex min-w-0 flex-1 items-center gap-3'>
             <div className='flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-secondary-foreground'>
               {index + 1}
             </div>
 
-            {/* 文字主体：min-w-0 确保内部 truncate 生效 */}
-            <div className='flex-1 min-w-0 space-y-1'>
-              {/* 标题行：移动端建议允许折行，或使用更紧凑的间距 */}
-              <div className='text-sm font-medium leading-none text-foreground break-words sm:truncate'>
-                <span className="text-primary/90">{category || '未选择板块'}</span>
-                <span className="mx-1.5 text-muted-foreground/50">/</span>
+            <div className='min-w-0 flex-1 space-y-1'>
+              <div className='text-sm leading-none font-medium break-words text-foreground sm:truncate'>
+                <span className='text-primary/90'>
+                  {category || '未选择板块'}
+                </span>
+                <span className='mx-1.5 text-muted-foreground/50'>/</span>
                 <span>{subCategory || '未选择类目'}</span>
                 {regex && (
                   <>
-                    <span className="mx-1.5 text-muted-foreground/50">/</span>
-                    <span className="font-mono text-xs bg-muted px-1 rounded">{regex}</span>
+                    <span className='mx-1.5 text-muted-foreground/50'>/</span>
+                    <span className='rounded bg-muted px-1 font-mono text-xs'>
+                      {regex}
+                    </span>
                   </>
                 )}
               </div>
 
               {savePath && (
                 <div className='flex items-center gap-1.5 text-xs text-muted-foreground'>
-                  <span className="shrink-0 font-semibold text-[10px] uppercase tracking-wider">{downloader}</span>
-                  <span className="text-muted-foreground/30">|</span>
-                  {/* 路径：强制截断并显示省略号 */}
-                  <span className='truncate italic'>
-            {savePath}
-          </span>
+                  <span className='shrink-0 text-[10px] font-semibold tracking-wider uppercase'>
+                    {downloader}
+                  </span>
+                  <span className='text-muted-foreground/30'>|</span>
+                  <span className='truncate italic'>{savePath}</span>
                 </div>
               )}
             </div>
           </div>
 
-          {/* 右侧操作区：shrink-0 防止按钮被左侧长文字挤压 */}
-          <div className='flex shrink-0 items-center gap-1 ml-2'>
+          <div className='ml-2 flex shrink-0 items-center gap-1'>
             <ChevronDown className='h-4 w-4 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180' />
             <Button
               size='icon'
@@ -125,11 +121,11 @@ export function FolderItem({
                   }}
                 >
                   <FormControl>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className='w-full'>
                       <SelectValue placeholder='选择板块' />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="w-full">
+                  <SelectContent className='w-full'>
                     <SelectItem value='ALL'>不限制板块</SelectItem>
                     {categories?.map((c) => (
                       <SelectItem key={c.category} value={c.category}>
@@ -142,7 +138,6 @@ export function FolderItem({
             )}
           />
 
-          {/* subCategory */}
           <FormField
             control={form.control}
             name={`folders.${index}.subCategory`}
@@ -155,11 +150,11 @@ export function FolderItem({
                   onValueChange={field.onChange}
                 >
                   <FormControl>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className='w-full'>
                       <SelectValue placeholder='选择分类' />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="w-full">
+                  <SelectContent className='w-full'>
                     <SelectItem value='ALL'>不限制类目</SelectItem>
                     {subCategories.map((s) => (
                       <SelectItem key={s.category} value={s.category}>
@@ -172,7 +167,6 @@ export function FolderItem({
             )}
           />
 
-          {/* regex */}
           <FormField
             control={form.control}
             name={`folders.${index}.regex`}
@@ -193,7 +187,6 @@ export function FolderItem({
             )}
           />
 
-          {/* downloader */}
           <FormField
             control={form.control}
             name={`folders.${index}.downloader`}
@@ -208,14 +201,14 @@ export function FolderItem({
                   }}
                 >
                   <FormControl>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className='w-full'>
                       <SelectValue placeholder='选择下载器' />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="w-full">
-                    {downloaders.map((d) => (
+                  <SelectContent className='w-full'>
+                    {downloaders?.map((d) => (
                       <SelectItem key={d.id} value={d.id}>
-                        {d.name}
+                        {d.id}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -224,7 +217,6 @@ export function FolderItem({
             )}
           />
 
-          {/* savePath */}
           <FormField
             control={form.control}
             name={`folders.${index}.savePath`}
@@ -237,11 +229,11 @@ export function FolderItem({
                   onValueChange={field.onChange}
                 >
                   <FormControl>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className='w-full'>
                       <SelectValue placeholder='选择路径' />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="w-full">
+                  <SelectContent className='w-full'>
                     {savePaths.map((p) => (
                       <SelectItem key={p.path} value={p.path}>
                         {p.path}

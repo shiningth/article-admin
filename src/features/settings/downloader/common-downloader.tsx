@@ -30,8 +30,10 @@ const commonDownloaderSchema = z.object({
   ),
 })
 
+type downloadValues = z.infer<typeof commonDownloaderSchema>
+
 export function CommonDownloader({ downloaderId }: { downloaderId: string }) {
-  const downloader = useForm<z.infer<typeof commonDownloaderSchema>>({
+  const downloader = useForm<downloadValues>({
     resolver: zodResolver(commonDownloaderSchema),
     defaultValues: {
       url: '',
@@ -45,16 +47,14 @@ export function CommonDownloader({ downloaderId }: { downloaderId: string }) {
   const { data } = useQuery({
     queryKey: ['downloader', downloaderId],
     queryFn: async () => {
-      const res = await getConfig<z.infer<typeof commonDownloaderSchema>>(
-        'Downloader.' + downloaderId
-      )
+      const res = await getConfig<downloadValues>('Downloader.' + downloaderId)
       return res.data
     },
     staleTime: 5 * 60 * 1000,
   })
 
   const updateMutation = useMutation({
-    mutationFn: async (values: z.infer<typeof commonDownloaderSchema>) => {
+    mutationFn: async (values: downloadValues) => {
       return await postConfig('Downloader.' + downloaderId, values as never)
     },
     onSuccess: (res) => {
@@ -73,9 +73,7 @@ export function CommonDownloader({ downloaderId }: { downloaderId: string }) {
   return (
     <Form {...downloader}>
       <form
-        onSubmit={downloader.handleSubmit((values) => {
-          updateMutation.mutate(values)
-        })}
+        onSubmit={downloader.handleSubmit((values) => updateMutation.mutate(values))}
         className='max-w-md space-y-4'
       >
         <FormField

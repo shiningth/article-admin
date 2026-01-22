@@ -24,6 +24,7 @@ import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authen
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
+import { Route as AuthenticatedDownloadLogIndexRouteImport } from './routes/_authenticated/download-log/index'
 import { Route as AuthenticatedArticlesIndexRouteImport } from './routes/_authenticated/articles/index'
 import { Route as AuthenticatedTasksLogRouteImport } from './routes/_authenticated/tasks/log'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
@@ -109,6 +110,12 @@ const AuthenticatedHelpCenterIndexRoute =
     path: '/help-center/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDownloadLogIndexRoute =
+  AuthenticatedDownloadLogIndexRouteImport.update({
+    id: '/download-log/',
+    path: '/download-log/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedArticlesIndexRoute =
   AuthenticatedArticlesIndexRouteImport.update({
     id: '/articles/',
@@ -170,6 +177,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/tasks/log': typeof AuthenticatedTasksLogRoute
   '/articles': typeof AuthenticatedArticlesIndexRoute
+  '/download-log': typeof AuthenticatedDownloadLogIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
@@ -192,6 +200,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/tasks/log': typeof AuthenticatedTasksLogRoute
   '/articles': typeof AuthenticatedArticlesIndexRoute
+  '/download-log': typeof AuthenticatedDownloadLogIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
@@ -217,6 +226,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/tasks/log': typeof AuthenticatedTasksLogRoute
   '/_authenticated/articles/': typeof AuthenticatedArticlesIndexRoute
+  '/_authenticated/download-log/': typeof AuthenticatedDownloadLogIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
@@ -242,6 +252,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/tasks/log'
     | '/articles'
+    | '/download-log'
     | '/help-center'
     | '/settings/'
     | '/tasks'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/tasks/log'
     | '/articles'
+    | '/download-log'
     | '/help-center'
     | '/settings'
     | '/tasks'
@@ -288,6 +300,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/tasks/log'
     | '/_authenticated/articles/'
+    | '/_authenticated/download-log/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
@@ -413,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/download-log/': {
+      id: '/_authenticated/download-log/'
+      path: '/download-log'
+      fullPath: '/download-log'
+      preLoaderRoute: typeof AuthenticatedDownloadLogIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/articles/': {
       id: '/_authenticated/articles/'
       path: '/articles'
@@ -494,6 +514,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedTasksLogRoute: typeof AuthenticatedTasksLogRoute
   AuthenticatedArticlesIndexRoute: typeof AuthenticatedArticlesIndexRoute
+  AuthenticatedDownloadLogIndexRoute: typeof AuthenticatedDownloadLogIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
 }
@@ -504,6 +525,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedTasksLogRoute: AuthenticatedTasksLogRoute,
   AuthenticatedArticlesIndexRoute: AuthenticatedArticlesIndexRoute,
+  AuthenticatedDownloadLogIndexRoute: AuthenticatedDownloadLogIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
 }

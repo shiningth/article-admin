@@ -1,9 +1,50 @@
 import { request } from '@/api/request.ts'
-import type { Task } from '@/features/tasks/components/task-manager.tsx'
-import { TaskLogFilter, TaskLogResult } from '@/features/tasks/log/task-log.tsx'
+
+export interface TaskFunc {
+  func_name: string
+  func_label: string
+  func_args: string[]
+}
+
+export interface Task {
+  id: number
+  task_name: string
+  task_func: string
+  task_args: string
+  task_cron: string
+  enable: boolean
+}
+
+export interface TaskLogFilter {
+  page: number
+  pageSize: number
+  task_func: string
+}
+export interface TaskLog {
+  id: number
+  task_name: string
+  task_func: string
+  start_time: string
+  end_time: string
+  execute_seconds: number
+  execute_result: string
+  execute_flag: string
+  success: boolean
+  error: string
+  create_time: string
+}
+export interface TaskLogResult {
+  total: number
+  items: TaskLog[]
+}
 
 export function getTasks() {
   return request<Task[]>({ url: '/tasks' })
+}
+
+
+export function fetchFuncList() {
+  return request<TaskFunc[]>({ url: '/tasks/funcs' })
 }
 
 export function addTask(task: Task) {
