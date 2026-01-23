@@ -8,7 +8,7 @@ export function CategoryCards({ data }: { data: Section[] }) {
       {data.map((cat,index) => (
         <Card className='bg-gradient-to-br from-background to-muted transition hover:shadow-lg' key={index}>
           <CardHeader className='flex flex-row items-center justify-between'>
-            <CardTitle className='text-sm'>{cat.category}</CardTitle>
+            <CardTitle className='text-sm'>{cat.name}</CardTitle>
             <Layers className='h-4 w-4 text-muted-foreground' />
           </CardHeader>
 
