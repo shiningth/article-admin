@@ -84,8 +84,6 @@ export function TelegramNotificationForm() {
     if (res.code === 0) {
       toast.success(res.message)
       queryClient.invalidateQueries({ queryKey: [CONFIG_KEY] })
-    } else {
-      toast.error(res.message)
     }
   }
 

@@ -4,11 +4,11 @@ import type { Section } from '@/api/article.ts'
 
 /** 修炼等级阈值定义（累计资源） */
 const REALM_LEVELS = [
-  { name: '炼气期', threshold: 0 },
-  { name: '筑基期', threshold: 5_000 },
-  { name: '结丹期', threshold: 20_000 },
-  { name: '元婴期', threshold: 200_000 },
-  { name: '化神期', threshold: 300_000 },
+  { name: '灵气枯竭', threshold: 0 },
+  { name: '灵气稀薄', threshold: 5_000 },
+  { name: '灵气平稳', threshold: 20_000 },
+  { name: '灵气充沛', threshold: 200_000 },
+  { name: '灵气鼎盛', threshold: 300_000 },
 ]
 
 function getRealm(total: number) {
@@ -42,7 +42,7 @@ export function SummaryCards({ data }: { data: Section[] }) {
             <Layers className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <div className="text-sm text-muted-foreground">灵根属性</div>
+            <div className="text-sm text-muted-foreground">天地属性</div>
             <div className="text-3xl font-bold tracking-tight">
               {data.length}
             </div>
@@ -75,7 +75,7 @@ export function SummaryCards({ data }: { data: Section[] }) {
           </div>
           <div>
             <div className="text-sm text-muted-foreground">
-              当前修炼等级
+              此方天地
             </div>
             <div className="text-2xl font-bold tracking-tight">
               {realm.current.name}

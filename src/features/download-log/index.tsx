@@ -19,10 +19,10 @@ export function DownloadLog() {
       </Header>
 
       <Main fixed>
-        <div className='flex flex-wrap items-end justify-between gap-2'>
+        <div className='flex flex-wrap items-end justify-between gap-2 mb-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>下载记录</h2>
-            <p className='text-muted-foreground'>查询下载记录</p>
+            <h2 className='text-2xl font-bold tracking-tight'>战果回录</h2>
+            <p className='text-muted-foreground text-sm'>所有已取回之物，皆载于此</p>
           </div>
         </div>
         <DownloadLogTable />

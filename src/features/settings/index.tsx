@@ -10,27 +10,27 @@ import { TopNav } from '@/features/settings/components/top-nav.tsx'
 
 const sidebarNavItems = [
   {
-    title: '账户',
+    title: '身份印记',
     href: '/settings',
     icon: <UserPen size={18} />,
   },
   {
-    title: '路由',
+    title: '万物流向',
     href: '/settings/rule',
     icon: <Route size={18} />,
   },
   {
-    title: '下载器',
+    title: '灵器配置',
     href: '/settings/downloader',
     icon: <Download size={18} />,
   },
   {
-    title: '通知',
+    title: '灵音通道',
     href: '/settings/notifications',
     icon: <Bell size={18} />,
   },
   {
-    title: '系统',
+    title: '阵基细则',
     href: '/settings/system',
     icon: <Cog size={18} />,
   },
@@ -55,10 +55,10 @@ export function Settings() {
             <div className='mb-8'>
               <div className='mb-2 flex items-center gap-3'>
                 <Settings2 className='h-8 w-8 text-primary' />
-                <h1 className='text-3xl font-bold'>服务器配置</h1>
+                <h1 className='text-3xl font-bold'>法宝中枢</h1>
               </div>
-              <p className='text-muted-foreground'>
-                配置和管理您的下载器、通知渠道等
+              <p className='text-muted-foreground text-sm'>
+                统御诸般法宝、传讯阵法等核心要素
               </p>
             </div>
             <TopNav items={sidebarNavItems} />

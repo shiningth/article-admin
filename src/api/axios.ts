@@ -1,14 +1,16 @@
-import Axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig, type AxiosResponse } from "axios";
+import Axios, {
+  type AxiosError,
+  type AxiosInstance,
+  type InternalAxiosRequestConfig,
+  type AxiosResponse,
+} from 'axios'
+import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store.ts'
 
 const axios: AxiosInstance = Axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 60000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 })
-
 
 axios.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -30,6 +32,7 @@ axios.interceptors.response.use(
     return response
   },
   (error: AxiosError) => {
+    toast.error('服务器异常')
     return Promise.reject(error)
   }
 )

@@ -5,8 +5,8 @@ import { NotificationsForm } from './notifications-form'
 export function SettingsNotifications() {
   return (
     <ContentSection
-      title='通知'
-      desc='管理配置微信、TG等通知渠道'
+      title='灵音通道'
+      desc='跨界传讯之径，实时回响阵法运转'
       icon={<Bell size={18} />}
     >
       <NotificationsForm />

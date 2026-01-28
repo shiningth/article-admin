@@ -5,8 +5,8 @@ import { Cog } from 'lucide-react'
 export function SettingsSystem() {
   return (
     <ContentSection
-      title='系统配置'
-      desc='一些零碎的配置项'
+      title='阵基细则'
+      desc='不属主脉亦影响全局'
       icon={<Cog className='h-5 w-5 text-primary' />}
     >
       <SystemConfigForm />

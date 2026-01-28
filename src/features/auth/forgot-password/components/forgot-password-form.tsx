@@ -40,8 +40,6 @@ export function ForgotPasswordForm({
     if (res.code === 0) {
       toast.success('前往注册账号')
       navigate({ to: '/sign-up', replace: true })
-    } else {
-      toast.error(res.message)
     }
   }
 
@@ -49,8 +47,6 @@ export function ForgotPasswordForm({
     const res = await getResetToken()
     if (res.code === 0) {
       toast.success(res.message)
-    } else {
-      toast.error(res.message)
     }
   }
 

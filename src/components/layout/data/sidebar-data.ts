@@ -18,56 +18,56 @@ export const sidebarData: SidebarData = {
   },
   navGroups: [
     {
-      title: '通用',
+      title: '洞天福地',
       items: [
         {
-          title: '内省',
+          title: '观心台',
           url: '/',
           icon: LayoutDashboard,
         },
         {
-          title: '闭关',
+          title: '时辰阵',
           icon: ListTodo,
           items: [
             {
               url: '/tasks',
-              title: '闭关管理',
+              title: '阵法编排',
               icon: BookCheck,
             },
             {
               url: '/tasks/log',
-              title: '闭关记录',
+              title: '运转记录',
               icon: AlarmClockCheck,
             },
           ],
         },
         {
-          title: '杀敌历程',
+          title: '征伐录',
           url: '/download-log',
           icon: ClipboardClock,
         },
         {
-          title: '修真界',
+          title: '万藏阁',
           url: '/articles',
           icon: Newspaper,
         },
       ],
     },
     {
-      title: '其他',
+      title: '宗门事务',
       items: [
         {
-          title: '装备检查',
+          title: '法宝校验',
           url: '/settings',
           icon: Settings,
         },
         {
-          title: '门派令牌',
+          title: '宗门令符',
           url: '/tokens',
           icon: KeyRound,
         },
         {
-          title: '问天',
+          title: '问道台',
           url: '/help-center',
           icon: HelpCircle,
         },

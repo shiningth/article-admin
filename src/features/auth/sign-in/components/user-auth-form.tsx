@@ -62,8 +62,6 @@ export function UserAuthForm({
       const targetPath = redirectTo || '/'
       toast.success(`欢迎回来, ${data.username}!`)
       await navigate({ to: targetPath, replace: true })
-    } else {
-      toast.error(res.message)
     }
   }
 

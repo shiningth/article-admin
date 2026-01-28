@@ -25,10 +25,27 @@ export interface DownloadLogResult {
   items: DownloadLog[]
 }
 
+export interface SectionCount {
+  count: number
+  section: string
+}
+
+export interface DownloadState {
+  download_count: number
+  section_count: SectionCount[]
+}
+
 export function pageDownloadLog(filter: DownloadLogFilter) {
   return request<DownloadLogResult>({
     url: `/download-log/search`,
     method: 'post',
     data: filter,
+  })
+}
+
+export function getDownloadState() {
+  return request<DownloadState>({
+    url: `/download-log/state`,
+    method: 'get',
   })
 }

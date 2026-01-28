@@ -15,7 +15,7 @@ export function AppTitle() {
           asChild
         >
           <div>
-            <span className='truncate font-bold'>修真世界</span>
+            <span className='truncate font-bold'>修仙！</span>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

@@ -87,8 +87,6 @@ export function WechatNotificationForm() {
     if (res.code === 0) {
       toast.success(res.message)
       queryClient.invalidateQueries({ queryKey: [CONFIG_KEY] })
-    } else {
-      toast.error(res.message)
     }
   }
   return (

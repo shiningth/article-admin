@@ -39,6 +39,11 @@ export interface Section {
   categories?: Category[]
 }
 
+export interface UploadResult {
+  inserted: number
+  skipped: number
+}
+
 export function getArticles(data: ArticleFilter) {
   return request<ArticleListResult>({
     url: '/articles/search',
@@ -63,5 +68,23 @@ export function manulDownloadArticle(
   return request({
     url: '/articles/download/manul',
     params: { tid, downloader, save_path: savePath },
+  })
+}
+
+export function uploadArticle(
+  file: File,
+  onProgress?: (percent: number) => void
+) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return request<UploadResult>({
+    url: '/articles/import/excel',
+    method: 'post',
+    data: formData,
+    onUploadProgress: (e) => {
+      if (!e.total) return
+      const percent = Math.round((e.loaded / e.total) * 100)
+      onProgress?.(percent)
+    },
   })
 }

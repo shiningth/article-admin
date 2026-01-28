@@ -19,10 +19,10 @@ export function Tasks() {
       </Header>
 
       <Main fixed>
-        <div className='flex flex-wrap items-end justify-between gap-2'>
+        <div className='flex flex-wrap items-end justify-between gap-2 mb-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>任务调度管理</h2>
-            <p className='text-muted-foreground'>配置并监控自动执行的定时任务</p>
+            <h2 className='text-2xl font-bold tracking-tight'>天机轮转</h2>
+            <p className='text-muted-foreground text-sm'>以天时为引，驱动诸阵自行运转，万事各归其序</p>
           </div>
         </div>
         <TaskManager/>

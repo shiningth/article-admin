@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { getArticles, getCategories } from '@/api/article.ts'
+import { toast } from 'sonner'
+import { getArticles, getCategories, uploadArticle } from '@/api/article.ts'
 import { useSearch } from '@/context/search-provider.tsx'
 import { useDebounce } from '@/hooks/use-debounce.tsx'
+import { Progress } from '@/components/ui/progress.tsx'
+import { EmptyState } from '@/components/empty.tsx'
+import { Loading } from '@/components/loading.tsx'
 import { CommonPagination } from '@/components/pagination.tsx'
 import { ArticleCard } from '@/features/articles/components/article-card.tsx'
 import { FilterBar } from '@/features/articles/components/filter-bar.tsx'
-import { Loading } from '@/components/loading.tsx'
-import { EmptyState } from '@/components/empty.tsx'
 
 export function ArticlesDesktop() {
   const { keyword } = useSearch()
@@ -18,6 +20,8 @@ export function ArticlesDesktop() {
     keyword: '',
     section: '',
   })
+  const [progress, setProgress] = useState(0)
+  const [importing, setImporting] = useState(false)
 
   const { data, isLoading } = useQuery({
     queryKey: ['articles', filter, debouncedKeyword],
@@ -45,7 +49,29 @@ export function ArticlesDesktop() {
           value={filter}
           categories={categories || []}
           onChange={(v) => setFilter(v)}
+          onImport={async (file) => {
+            setImporting(true)
+            setProgress(0)
+            try {
+              const res = await uploadArticle(file, (p) => {
+                setProgress(p)
+              })
+              if (res.code === 0) {
+                toast.success(res.message)
+              }
+            } finally {
+              setImporting(false)
+            }
+          }}
         />
+        {importing && (
+          <div className='px-2'>
+            <Progress value={progress} />
+            <div className='mt-1 text-sm text-muted-foreground'>
+              正在导入 {progress}%
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ② 表格区域（滚动容器） */}

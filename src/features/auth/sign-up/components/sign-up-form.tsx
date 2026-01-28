@@ -51,8 +51,6 @@ export function SignUpForm({
     setIsLoading(false)
     if (res.code === 0) {
       await navigate({ to: '/sign-in', replace: true })
-    }else {
-      toast.error(res.message)
     }
   }
 

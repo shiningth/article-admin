@@ -19,11 +19,11 @@ export function TaskLog() {
       </Header>
 
       <Main fixed>
-        <div className='flex flex-wrap items-end justify-between gap-2'>
+        <div className='flex flex-wrap items-end justify-between gap-2 mb-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>任务调度记录</h2>
-            <p className='text-muted-foreground'>
-             查看任务执行结果
+            <h2 className='text-2xl font-bold tracking-tight'>运转留痕</h2>
+            <p className='text-muted-foreground text-sm'>
+              每一次运转，皆有因果回应
             </p>
           </div>
         </div>

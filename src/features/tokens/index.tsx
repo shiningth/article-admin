@@ -19,10 +19,10 @@ export function Tokens() {
       </Header>
 
       <Main fixed>
-        <div className='flex flex-wrap items-end justify-between gap-2'>
+        <div className='flex flex-wrap items-end justify-between gap-2 mb-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>令牌管理</h2>
-            <p className='text-muted-foreground'>令牌可用于第三方程序调用接口</p>
+            <h2 className='text-2xl font-bold tracking-tight'>宗门令符</h2>
+            <p className='text-muted-foreground text-sm'>令符可授外界法器通行之权，用以调用宗门术法</p>
           </div>
         </div>
         <TokenManager/>
