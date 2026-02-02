@@ -182,6 +182,19 @@ export function WechatNotificationForm() {
         />
 
         <FormField
+          name='to_user'
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>推送用户</FormLabel>
+              <FormControl>
+                <Input placeholder='推送用户' {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
           name='template'
           control={form.control}
           render={({ field }) => (

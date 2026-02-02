@@ -18,7 +18,7 @@ import { ImagePreview } from '@/components/image-preview.tsx'
 
 export function ArticleCard({ article }: { article: Article }) {
   const { mode } = useImageMode()
-  const images = article.preview_images.split(',').filter(Boolean)
+  const images = (article.preview_images ?? '').split(',').filter(Boolean)
   const [imageError, setImageError] = useState(false)
 
   const handleCopyMagnet = async () => {
@@ -32,7 +32,6 @@ export function ArticleCard({ article }: { article: Article }) {
 
   return (
     <Card className='group glass-card relative flex w-full max-w-full flex-col gap-4 overflow-hidden rounded-2xl p-4 transition-all duration-300 sm:flex-row'>
-      {/* 顶部渐变装饰 */}
       <div className="absolute top-0 left-0 h-1 w-full
   bg-gradient-to-r
   from-pink-400 via-sky-400 to-blue-500
