@@ -50,15 +50,15 @@ export function TaskTableMobile({
           <CardContent>
             <dl className='space-y-3'>
               <div className='flex justify-between'>
-                <dt className='text-sm text-muted-foreground'>执行函数</dt>
+                <dt className='text-sm text-muted-foreground'>阵法核心</dt>
                 <dd className='text-sm'>{task.task_func}</dd>
               </div>
               <div className='flex justify-between'>
-                <dt className='text-sm text-muted-foreground'>执行参数</dt>
+                <dt className='text-sm text-muted-foreground'>阵法参数</dt>
                 <dd className='text-sm'>{task.task_args}</dd>
               </div>
               <div className='flex justify-between'>
-                <dt className='text-sm text-muted-foreground'>cron表达式</dt>
+                <dt className='text-sm text-muted-foreground'>运转周期</dt>
                 <dd className='text-sm'>{task.task_cron}</dd>
               </div>
             </dl>
@@ -66,8 +66,8 @@ export function TaskTableMobile({
           <CardFooter className='flex justify-end gap-2'>
             <ConfirmButton
               variant='outline'
-              title='确认执行任务'
-              description='任务将在后台执行，请勿频繁执行任务'
+              title='确认执行阵法'
+              description='阵法将在后台执行，请勿频繁执行阵法'
               triggerText={<Play className='h-4 w-4' />}
               className='text-emerald-700'
               onConfirm={() => onRun(task.id)}
@@ -78,7 +78,7 @@ export function TaskTableMobile({
             <ConfirmButton
               variant='outline'
               className='text-destructive'
-              title='删除任务'
+              title='删除阵法'
               description='删除后数据将无法恢复，是否确认？'
               triggerText={<Trash2 className='h-4 w-4' />}
               onConfirm={() => onDelete(task.id)}

@@ -153,11 +153,11 @@ export default function TaskManager() {
           <div className='space-y-1'>
             <p className='flex items-center gap-1 text-xs text-muted-foreground md:text-sm'>
               <Zap className='h-3 w-3 fill-amber-500 text-amber-500' />
-              当前活跃任务: {tasks?.filter((item) => item.enable).length}
+              当前活跃阵法: {tasks?.filter((item) => item.enable).length}
             </p>
           </div>
           <ResponsiveModal
-            title={editingTask ? '编辑任务' : '创建新任务'}
+            title={editingTask ? '编排阵法' : '录入阵法'}
             open={isFormOpen}
             onOpenChange={setIsFormOpen}
             trigger={
@@ -165,7 +165,7 @@ export default function TaskManager() {
                 onClick={() => setEditingTask(null)}
                 className='rounded-full'
               >
-                <Plus /> 新增任务
+                <Plus /> 录入阵法
               </Button>
             }
           >
@@ -181,9 +181,9 @@ export default function TaskManager() {
                   name='task_name'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>任务名称</FormLabel>
+                      <FormLabel>阵法名称</FormLabel>
                       <FormControl>
-                        <Input placeholder='输入任务名称' {...field} />
+                        <Input placeholder='输入阵法名称' {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -194,14 +194,14 @@ export default function TaskManager() {
                   name='task_func'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>执行函数</FormLabel>
+                      <FormLabel>阵法核心</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
                           value={field.value}
                         >
                           <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='选择函数' />
+                            <SelectValue placeholder='选择核心' />
                           </SelectTrigger>
                           <SelectContent className='w-full'>
                             {taskFunctions?.map((f) => (
@@ -220,7 +220,7 @@ export default function TaskManager() {
                   name='task_args'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>函数参数</FormLabel>
+                      <FormLabel>核心参数</FormLabel>
                       <FormControl>
                         <Textarea
                           {...field}
@@ -238,7 +238,7 @@ export default function TaskManager() {
                   name='task_cron'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Cron 表达式</FormLabel>
+                      <FormLabel>运转周期</FormLabel>
                       <FormControl>
                         <div className='relative'>
                           <Input {...field} />

@@ -66,20 +66,20 @@ export default function TokenManager() {
           <div className='space-y-1'>
             <p className='flex items-center gap-1 text-xs text-muted-foreground md:text-sm'>
               <Zap className='h-3 w-3 fill-amber-500 text-amber-500' />
-              当前令牌数量: {data?.length}
+              当前令符数量: {data?.length}
             </p>
 
             <Popover>
               <PopoverTrigger asChild>
                 <button className='flex items-center gap-1 text-xs text-primary hover:underline'>
                   <HelpCircle className='h-3 w-3' />
-                  令牌使用方法
+                  令符使用方法
                 </button>
               </PopoverTrigger>
 
               <PopoverContent className='w-80 text-sm' align="start">
                 <div className='space-y-2'>
-                  <p className='font-medium'>如何使用 API 令牌</p>
+                  <p className='font-medium'>如何使用令符</p>
 
                   <ol className='list-decimal space-y-1 pl-4 text-muted-foreground'>
                     <li>在请求 Header 中添加：</li>
@@ -141,7 +141,7 @@ export default function TokenManager() {
           </div>
 
           <Button onClick={() => setOpen(true)} className='gap-2'>
-            <Plus className='h-4 w-4' /> 新建令牌
+            <Plus className='h-4 w-4' /> 申领令符
           </Button>
         </div>
       </div>
@@ -149,8 +149,8 @@ export default function TokenManager() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>令牌标识</TableHead>
-              <TableHead>令牌</TableHead>
+              <TableHead>令符标识</TableHead>
+              <TableHead>令符</TableHead>
               <TableHead>操作</TableHead>
             </TableRow>
           </TableHeader>
@@ -189,7 +189,7 @@ export default function TokenManager() {
                     <ConfirmButton
                       variant='outline'
                       className='text-destructive'
-                      title='删除令牌'
+                      title='删除令符'
                       description='删除后数据将无法恢复，是否确认？'
                       triggerText={<Trash2 className='h-4 w-4' />}
                       onConfirm={() => handleDelete(token.id)}
@@ -205,12 +205,12 @@ export default function TokenManager() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>新建令牌</DialogTitle>
+            <DialogTitle>申领令符</DialogTitle>
           </DialogHeader>
 
           <div className='space-y-2'>
             <Input
-              placeholder='输入令牌标识'
+              placeholder='输入令符标识'
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
             />

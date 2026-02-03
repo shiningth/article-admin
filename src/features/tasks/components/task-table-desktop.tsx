@@ -31,9 +31,9 @@ export function TaskTableDesktop({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>任务名称</TableHead>
-            <TableHead>执行逻辑</TableHead>
-            <TableHead>Cron 周期</TableHead>
+            <TableHead>阵法名称</TableHead>
+            <TableHead>阵法核心</TableHead>
+            <TableHead>运转周期</TableHead>
             <TableHead>管理</TableHead>
           </TableRow>
         </TableHeader>
@@ -94,8 +94,8 @@ export function TaskTableDesktop({
               <TableCell>
                 <ConfirmButton
                   variant='outline'
-                  title='确认执行任务'
-                  description='任务将在后台执行，请勿频繁执行任务'
+                  title='确认执行阵法'
+                  description='阵法将在后台执行，请勿频繁执行阵法'
                   triggerText={<Play className='h-4 w-4' />}
                   className='mr-2 text-emerald-700'
                   onConfirm={() => onRun(task.id)}
@@ -111,7 +111,7 @@ export function TaskTableDesktop({
                 <ConfirmButton
                   variant='outline'
                   className='mr-2 text-destructive'
-                  title='删除任务'
+                  title='删除阵法'
                   description='删除后数据将无法恢复，是否确认？'
                   triggerText={<Trash2 className='h-4 w-4' />}
                   onConfirm={() => onDelete(task.id)}

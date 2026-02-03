@@ -27,9 +27,9 @@ export default defineConfig({
       injectRegister: 'inline',
       base: '/',
       manifest: {
-        name: 'Kuro',
-        short_name: 'Kuro',
-        description: 'Kuro',
+        name: 'Immortal',
+        short_name: 'Immortal',
+        description: 'Immortal',
         theme_color: '#09090b',
         background_color: '#09090b',
         display: 'standalone',

@@ -61,11 +61,11 @@ export function TaskLogTable() {
           }
         >
           <SelectTrigger className='w-full max-w-48'>
-            <SelectValue placeholder='选择一个函数' />
+            <SelectValue placeholder='选择一个阵法' />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value='all'>全部函数</SelectItem>
+              <SelectItem value='all'>全部阵法</SelectItem>
               {tasks?.map((item, index) => (
                 <SelectItem value={item.task_func} key={index}>
                   {item.task_name}
@@ -79,11 +79,11 @@ export function TaskLogTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>任务名称</TableHead>
-              <TableHead>任务函数</TableHead>
+              <TableHead>阵法名称</TableHead>
+              <TableHead>阵法核心</TableHead>
               <TableHead>开始时间</TableHead>
               <TableHead>结束时间</TableHead>
-              <TableHead>耗时</TableHead>
+              <TableHead>执行耗时</TableHead>
               <TableHead className='max-w-[300px]'>输出信息</TableHead>
               <TableHead>执行结果</TableHead>
               <TableHead>异常信息</TableHead>

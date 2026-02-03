@@ -11,6 +11,7 @@ export interface Article {
   size: number
   in_stock: boolean
   detail_url: string
+  website: string
 }
 
 export interface ArticleFilter {

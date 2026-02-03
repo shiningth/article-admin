@@ -9,7 +9,6 @@ import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { CategoryCards } from '@/features/dashboard/components/category-cards.tsx'
 import { DownloadDashboard } from '@/features/dashboard/components/download-state.tsx'
-import { RealmHint } from '@/features/dashboard/components/realm-hint.tsx'
 import { SummaryCards } from '@/features/dashboard/components/summary-cards.tsx'
 
 export function Dashboard() {
@@ -49,9 +48,6 @@ export function Dashboard() {
           <DownloadDashboard data={state ?? {download_count:0,section_count:[]}} />
           <SummaryCards data={data ?? []} />
           <CategoryCards data={data ?? []} />
-          <RealmHint
-            total={data?.reduce((sum, c) => sum + c.count, 0)}
-          ></RealmHint>
         </div>
       </Main>
     </>

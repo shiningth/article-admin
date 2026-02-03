@@ -82,8 +82,10 @@ export function ArticleCard({ article }: { article: Article }) {
 
       {/* 内容区 */}
       <div className='flex min-w-0 flex-1 flex-col gap-3'>
-        {/* 标签和日期 */}
         <div className='flex flex-wrap items-center gap-2 text-xs'>
+          <Badge variant='default' className='shadow-sm'>
+            {article.website}
+          </Badge>
           <Badge variant='secondary' className='shadow-sm'>
             {article.section}
           </Badge>
@@ -100,22 +102,18 @@ export function ArticleCard({ article }: { article: Article }) {
           </span>
         </div>
 
-        {/* 标题 */}
         <h6 className='line-clamp-3 break-words text-base font-semibold leading-snug transition-colors group-hover:text-primary sm:text-sm'>
           {article.title}
         </h6>
 
-        {/* 底部信息 */}
         <div className='mt-auto flex flex-wrap items-center gap-2 text-xs'>
-          {/* 文件大小 */}
-          {article.size && (
+          {article.size>0 && (
             <span className='flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 font-medium'>
               <Package className='h-3 w-3' />
               {article.size} MB
             </span>
           )}
 
-          {/* 下载状态 */}
           <span
             className={`flex items-center gap-1 rounded-full px-2.5 py-1 font-medium ${
               article.in_stock
