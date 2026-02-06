@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { addDays, format } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, CheckCircle2, Clock } from 'lucide-react'
 import type { DateRange } from 'react-day-picker'
 import { getArticles, getCategories } from '@/api/article.ts'
 import { formatDate } from '@/lib/utils.ts'
@@ -239,6 +239,7 @@ export function ArticlesTable() {
               <TableHead>标题</TableHead>
               <TableHead>大小</TableHead>
               <TableHead>发布日期</TableHead>
+              <TableHead>下载状态</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -281,6 +282,27 @@ export function ArticlesTable() {
                   <TableCell>{item.title}</TableCell>
                   <TableCell>{item.size}mb</TableCell>
                   <TableCell>{item.publish_date}</TableCell>
+                  <TableCell className='flex gap-1'>
+                    <span
+                      className={`flex items-center gap-1 rounded-full px-2.5 py-1 font-medium ${
+                        item.in_stock
+                          ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                          : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+                      }`}
+                    >
+                      {item.in_stock ? (
+                        <>
+                          <CheckCircle2 className='h-3 w-3' />
+                          已下载
+                        </>
+                      ) : (
+                        <>
+                          <Clock className='h-3 w-3' />
+                          未下载
+                        </>
+                      )}
+                    </span>
+                  </TableCell>
                 </TableRow>
               ))
             )}

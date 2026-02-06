@@ -18,16 +18,12 @@ export function Articles() {
   const [view, setView] = useState<'grid' | 'list'>('grid')
   const [importing, setImporting] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
-  const [file, setFile] = useState<File | undefined>(undefined)
-  const handleImport = async () => {
+  const handleImport = async (file: File) => {
     try {
-      if (file) {
-        setImporting(true)
-        const res = await uploadArticle(file)
-        setImporting(false)
-        if (res.code === 0) {
-          toast.success(res.message)
-        }
+      setImporting(true)
+      const res = await uploadArticle(file)
+      if (res.code === 0) {
+        toast.success(res.message)
       }
     } finally {
       setImporting(false)
@@ -56,9 +52,11 @@ export function Articles() {
             hidden
             accept='.xls,.xlsx,.csv'
             onChange={(e) => {
-              setFile(e.currentTarget.files?.[0])
+              const selectedFile = e.currentTarget.files?.[0]
               e.currentTarget.value = ''
-              handleImport()
+              if (selectedFile) {
+                handleImport(selectedFile)
+              }
             }}
           />
           {!isMobile && (
